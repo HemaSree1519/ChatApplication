@@ -98,7 +98,7 @@ export default class ChatBox extends Component<Props> {
     renderName = ({item}) => {
         return(
 
-                        <TouchableOpacity style={styles.separator}>
+                        <TouchableOpacity onPress={()=>this.props.navigation.navigate('Chat',{"name":item.name})} style={styles.separator}>
                             <Text style={styles.item}> {item.name} </Text>
                         </TouchableOpacity>
 

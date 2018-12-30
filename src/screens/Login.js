@@ -7,7 +7,7 @@ export default class Login extends React.Component<props>{
     static navigationOptions = ({ navigation }) => {
         return(
             {
-                headerTitle: "P2PApp",
+                headerTitle: "ChatBook",
                 headerBackTitle: "Back",
                 headerTintColor:"white",
                 headerStyle:{
@@ -17,7 +17,7 @@ export default class Login extends React.Component<props>{
         );
     };
     handlePress = () => {
-        console.log("Presses Next button")
+        this.props.navigation.navigate('Home');
     }
     render(){
         return(

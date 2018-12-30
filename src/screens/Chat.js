@@ -60,7 +60,7 @@ export default class Chat extends React.Component {
                     <SafeAreaView forceInset={{ bottom: 'never' }}>
                         <View style={styles.footer}>
                             <TextInput
-                                placeholder="TEXT HERE"
+                                placeholder="TEXT TO SEND"
                                 value={this.state.typing}
                                 style={styles.input}
                                 onChangeText={text => this.setState({typing: text})}>
