@@ -27,7 +27,6 @@ export default class ChatBox extends Component {
     }
     componentDidMount() {
         console.log(this.props.navigation.getParam('phoneNo'));
-        console.log()
     }
     componentWillMount() {
         var msgs = [];
@@ -83,7 +82,7 @@ export default class ChatBox extends Component {
     renderName = ({item}) => {
         return(
 
-                        <TouchableOpacity style={styles.separator}>
+                        <TouchableOpacity onPress={()=>this.props.navigation.navigate('Chat',{"name":item.name})} style={styles.separator}>
                             <Text style={styles.item}> {item.name} </Text>
                         </TouchableOpacity>
 

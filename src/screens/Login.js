@@ -15,7 +15,7 @@ export default class Login extends React.Component {
     static navigationOptions = ({ navigation }) => {
         return(
             {
-                headerTitle: "P2PApp",
+                headerTitle: "ChatBook",
                 headerBackTitle: "Back",
                 headerTintColor:"white",
                 headerStyle:{
@@ -27,6 +27,7 @@ export default class Login extends React.Component {
     handlePress = () => {
         firebase.database().ref('/registeredUsers').child(this.state.phoneNo).child('chat').set({'chat': 'chat'});
         this.props.navigation.navigate('Home', { phoneNo: this.state.phoneNo });
+
     }
     render(){
         return(
