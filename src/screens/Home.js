@@ -1,32 +1,15 @@
 import React, {Component} from 'react';
 import {Text, TextInput, TouchableOpacity, Button, View, FlatList} from 'react-native';
-
 import styles from '../styles/Home';
+import contacts from 'react-native-contacts';
+import firebase from '../../firebase/Firebase';
 
-import firebase from '@firebase/app'
-import 'firebase/database'
-import config from '../../firebase/Firebase';
-
-
-
-try {
-    firebase.initializeApp(config);
-} catch (e) {
-    if (!/already exists/.test(e.message))
-        console.log("firebase intialization error " + e.stackTrace);
-}
-const FIREBASE_REF = firebase.database().ref().child('messages');
-
-
-export default class ChatBox extends Component<Props> {
+export default class ChatBox extends Component {
 
     constructor(props) {
         super(props);
         this.addMsg = this.addMsg.bind(this);
         this.handleAddMsg = this.handleAddMsg.bind(this);
-
-
-
         this.state = {
             contacts:[
                 {name:'Hema'},
@@ -37,31 +20,33 @@ export default class ChatBox extends Component<Props> {
                 {name:'sggsdv'},
                 {name:'ljjn'},
                 {name:'jhujn'}
-
-
             ],
             messages: [],
             msg: ''
         }
     }
+    componentDidMount() {
+        console.log(this.props.navigation.getParam('phoneNo'));
+        console.log()
+    }
     componentWillMount() {
         var msgs = [];
 
-        FIREBASE_REF.on('value', (snap) => {
+        // FIREBASE_REF.on('value', (snap) => {
 
-                snap.forEach((childSnap) => {
+        //         snap.forEach((childSnap) => {
 
-                    var temp = {
-                        'time': childSnap.val().time,
-                        'title': childSnap.val().message
-                    }
-                    msgs.push(temp)
-                });
-                this.setState({messages: msgs});
+        //             var temp = {
+        //                 'time': childSnap.val().time,
+        //                 'title': childSnap.val().message
+        //             }
+        //             msgs.push(temp)
+        //         });
+        //         this.setState({messages: msgs});
 
-                msgs = [];
-            }
-        )
+        //         msgs = [];
+        //     }
+        // )
     }
     handleAddMsg() {
         if ( this.state.msg !== "") {
@@ -78,8 +63,8 @@ export default class ChatBox extends Component<Props> {
             time: Date.now(),
             message: msg
         }
-        console.log("Entered 1")
-        FIREBASE_REF.push(temp);
+        //console.log("Entered 1")
+        //FIREBASE_REF.push(temp);
     }
     static navigationOptions = ({ navigation }) => {
         return(

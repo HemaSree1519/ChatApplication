@@ -26,9 +26,9 @@ export default class Login extends React.Component {
     };
     handlePress = () => {
         firebase.database().ref('/registeredUsers').child(this.state.phoneNo).child('chat').set({'chat': 'chat'});
+        this.props.navigation.navigate('Home', { phoneNo: this.state.phoneNo });
     }
     render(){
-        console.log(this.state.phoneNo);
         return(
             <View style={styles.mainContainer}>
                 <View>
