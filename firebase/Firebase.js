@@ -1,3 +1,4 @@
+import firebase from 'firebase';
 const config = {
     apiKey: "AIzaSyALXl9iaBRKnPscmT-df6MJ05RanY_LcOY",
     authDomain: "chatbook-e5d99.firebaseapp.com",
@@ -6,4 +7,4 @@ const config = {
     storageBucket: "chatbook-e5d99.appspot.com",
     messagingSenderId: "623361853537"
 };
-export default config
+export default firebase.initializeApp(config);
