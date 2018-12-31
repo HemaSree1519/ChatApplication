@@ -7,4 +7,5 @@ const config = {
     storageBucket: "chatbook-e5d99.appspot.com",
     messagingSenderId: "623361853537"
 };
-export default firebase.initializeApp(config);
+firebase.initializeApp(config);
+export default firebase;

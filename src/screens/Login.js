@@ -5,12 +5,7 @@ import firebase from '../../firebase/Firebase';
 
 export default class Login extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state= {
-            phoneNo: ''
-        }
-    }
+      state= {phoneNo: ''}
 
     static navigationOptions = ({ navigation }) => {
         return(
@@ -25,7 +20,8 @@ export default class Login extends React.Component {
         );
     };
     handlePress = () => {
-        firebase.database().ref('/registeredUsers').child(this.state.phoneNo).child('chat').set({'chat': 'chat'});
+        console.log(this.state.phoneNo);
+        firebase.database().ref('/registeredUsers').child(this.state.phoneNo).set({'Flag': 'true'});
         this.props.navigation.navigate('Home', { phoneNo: this.state.phoneNo });
 
     }
