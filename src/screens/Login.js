@@ -1,40 +1,40 @@
-import  React from 'react'
-import {View, Button, TextInput, Text} from 'react-native'
+import React from 'react'
+import {Button, TextInput, View} from 'react-native'
 import styles from '../styles/Login';
 import firebase from '../../firebase/Firebase';
 
 export default class Login extends React.Component {
 
-      state= {phoneNo: ''}
+    state = {phoneNo: ''}
 
-    static navigationOptions = ({ navigation }) => {
-        return(
+    static navigationOptions = ({navigation}) => {
+        return (
             {
                 headerTitle: "ChatBook",
                 headerBackTitle: "Back",
-                headerTintColor:"white",
-                headerStyle:{
-                    backgroundColor:'#cc504e'
+                headerTintColor: "white",
+                headerStyle: {
+                    backgroundColor: '#cc504e'
                 },
             }
         );
     };
-    handlePress()
-    {
-        let USER_PH_NUM =this.state.phoneNo;
-        const REG_USERS= firebase.database().ref('/registeredUsers');
+
+    handlePress() {
+        let USER_PH_NUM = this.state.phoneNo;
+        const REG_USERS = firebase.database().ref('/registeredUsers');
         REG_USERS.once('value', (reg_users) => {
-            if (!reg_users.hasChild(USER_PH_NUM))
-            {
+            if (!reg_users.hasChild(USER_PH_NUM)) {
                 REG_USERS.child(this.state.phoneNo).set({'Flag': 'true'});
             }
 
         });
-        this.props.navigation.navigate('Home', { phoneNo:  USER_PH_NUM});
+        this.props.navigation.navigate('Home', {phoneNo: USER_PH_NUM});
 
     }
-    render(){
-        return(
+
+    render() {
+        return (
             <View style={styles.mainContainer}>
                 <View>
                     <TextInput
@@ -42,7 +42,7 @@ export default class Login extends React.Component {
                         keyboardType='numeric'
                         style={styles.input}
                         maxLength={10}
-                        onChangeText={(text)=> this.setState({phoneNo: text})}
+                        onChangeText={(text) => this.setState({phoneNo: text})}
                     />
                 </View>
                 <View>
