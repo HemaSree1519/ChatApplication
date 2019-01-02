@@ -8,8 +8,6 @@ export default class ChatBox extends Component {
 
     constructor(props) {
         super(props);
-        this.addMsg = this.addMsg.bind(this);
-        this.handleAddMsg = this.handleAddMsg.bind(this);
         this.state = {
             contacts: [],
         }
@@ -28,18 +26,21 @@ export default class ChatBox extends Component {
                         if (local_contacts[iterator].phoneNumbers.length !== 0) {
                             const USER_PH_NUM = local_contacts[iterator].phoneNumbers[0].number.replace(/\D/g, '');
                             const USER_NAME = local_contacts[iterator].givenName;
-                            console.log(USER_NAME)
                             if (USER_PH_NUM && reg_users.hasChild(USER_PH_NUM)) {
-                                cnts.push({
+                                let cnt={
                                     key: USER_PH_NUM,
                                     name: USER_NAME
-                                })
+                                }
+                                cnts.push(cnt);
+                                console.log("contact Object"+cnt.name)
                             }
                         }
                     }
+                  console.log("local contacts"+cnts[0].key)
                     this.setState({
                         contacts: cnts
                     })
+                    // console.log("Home screen state contacts"+this.state.contacts.item.key+" "+this.state.contacts.item.name)
                 });
             }
         })
@@ -60,14 +61,17 @@ export default class ChatBox extends Component {
     };
 
     renderName(contact) {
+        let persons={
+            sender: this.props.navigation.getParam("phoneNo"),
+            receiver: contact
+        }
         return (
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', {"name": contact.item.name})}
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', {"persons": persons})}
                               style={styles.separator}>
-                <Text style={styles.item}> {contact.item.name} </Text>
+                <Text style={styles.item}> {persons.receiver.item.name} </Text>
             </TouchableOpacity>
         );
     }
-
     render() {
         return (
             <View>
