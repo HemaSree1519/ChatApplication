@@ -10,9 +10,46 @@ export default StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#eee',
     },
+
+    messageContainer:{
+        flex: 1,
+        borderBottomColor: "rgba(92,94,94,0.5)",
+        borderBottomWidth: 0.5,
+        marginRight: 60,
+        padding:20,
+        textAlign: "justify",
+        alignItems: "flex-start",
+    },
+
+    senderMessageContainer:{
+        flex: 1,
+        alignItems: "center",
+        flexDirection: "row-reverse",
+    },
+    receiverMessageContainer:{
+        flex: 1,
+        alignItems: "center",
+        flexDirection: "row",
+    },
+    senderTextContainer:{
+        marginLeft: 60,
+        fontSize: 20,
+        paddingRight: 10
+    },
+    receiverTextContainer:{
+        marginRight: 60,
+        fontSize: 20,
+        paddingLeft: 10
+    },
+    iconContainer: {
+        borderRadius: 30,
+        width: 60,
+        height: 60
+    },
     message: {
         fontSize: 18,
     },
+
     sender: {
         fontWeight: 'bold',
         paddingRight: 10,

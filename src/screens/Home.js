@@ -32,15 +32,12 @@ export default class ChatBox extends Component {
                                     name: USER_NAME
                                 }
                                 cnts.push(cnt);
-                                console.log("contact Object"+cnt.name)
                             }
                         }
                     }
-                  console.log("local contacts"+cnts[0].key)
                     this.setState({
                         contacts: cnts
                     })
-                    // console.log("Home screen state contacts"+this.state.contacts.item.key+" "+this.state.contacts.item.name)
                 });
             }
         })
