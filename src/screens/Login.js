@@ -19,10 +19,18 @@ export default class Login extends React.Component {
             }
         );
     };
-    handlePress = () => {
-        console.log(this.state.phoneNo);
-        firebase.database().ref('/registeredUsers').child(this.state.phoneNo).set({'Flag': 'true'});
-        this.props.navigation.navigate('Home', { phoneNo: this.state.phoneNo });
+    handlePress()
+    {
+        let USER_PH_NUM =this.state.phoneNo;
+        const REG_USERS= firebase.database().ref('/registeredUsers');
+        REG_USERS.once('value', (reg_users) => {
+            if (!reg_users.hasChild(USER_PH_NUM))
+            {
+                REG_USERS.child(this.state.phoneNo).set({'Flag': 'true'});
+            }
+
+        });
+        this.props.navigation.navigate('Home', { phoneNo:  USER_PH_NUM});
 
     }
     render(){
@@ -41,7 +49,7 @@ export default class Login extends React.Component {
                     <Button
                         style={styles.button}
                         title="Next"
-                        onPress={this.handlePress}
+                        onPress={this.handlePress.bind(this)}
                     />
                 </View>
             </View>
