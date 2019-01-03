@@ -22,13 +22,9 @@ export default class Login extends React.Component {
     };
 
     setIsRegisterd(USER_PH_NUM) {
-        try {
-            AsyncStorage.setItem('isRegistered', 'true');
-        }
-        catch(err) {
-            console.log('Error setting data'+err);
-        }
-        this.props.navigation.navigate('Home', {phoneNo: USER_PH_NUM}); 
+        AsyncStorage.setItem('mobileNumber', this.state.phoneNo).then(()=>{
+            this.props.navigation.navigate('Home', {phoneNo: USER_PH_NUM}); 
+        });
     }
     handlePress() {
         let USER_PH_NUM = this.state.phoneNo;

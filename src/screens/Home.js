@@ -10,18 +10,16 @@ export default class ChatBox extends Component {
         super(props);
         this.state = {
             contacts: [],
+            phoneNo: '',
         }
     }
     componentDidMount() {
-        try {
-            AsyncStorage.getItem('isRegistered').then((isRegistered) => {
-                if (isRegistered === 'true') {
-                    this.props.navigation.navigate('Login');
-                }
-            });
-        } catch (error) {
-            console.log("Error retrieving data" + error);
-        }
+        AsyncStorage.getItem('mobileNumber').then((mobileNumber) => {
+            if (mobileNumber === undefined || mobileNumber === null) {
+                this.props.navigation.navigate('Login');
+            }
+            this.setState({phoneNo: mobileNumber});
+        });
     }
     componentWillMount() {
         const REG_USERS = firebase.database().ref('/registeredUsers');
@@ -52,7 +50,7 @@ export default class ChatBox extends Component {
             }
         })
     }
-    
+
     static navigationOptions = ({ navigation }) => {
         return (
             {
@@ -69,9 +67,10 @@ export default class ChatBox extends Component {
 
     renderName(contact) {
         let persons = {
-            sender: this.props.navigation.getParam("phoneNo"),
+            sender: this.state.phoneNo,
             receiver: contact
         }
+        console.log(persons.sender);
         return (
             <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', { "persons": persons })}
                 style={styles.separator}>
