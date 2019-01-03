@@ -1,11 +1,11 @@
 import firebase from 'firebase';
 const config = {
-    apiKey: "AIzaSyALXl9iaBRKnPscmT-df6MJ05RanY_LcOY",
-    authDomain: "chatbook-e5d99.firebaseapp.com",
-    databaseURL: "https://chatbook-e5d99.firebaseio.com",
-    projectId: "chatbook-e5d99",
-    storageBucket: "chatbook-e5d99.appspot.com",
-    messagingSenderId: "623361853537"
+    apiKey: "AIzaSyB46GikOl532H-FvXJlIJIcWf2iDCzCZz8",
+    authDomain: "chitchat-17097.firebaseapp.com",
+    databaseURL: "https://chitchat-17097.firebaseio.com",
+    projectId: "chitchat-17097",
+    storageBucket: "chitchat-17097.appspot.com",
+    messagingSenderId: "2880538017"
 };
 firebase.initializeApp(config);
 export default firebase;
