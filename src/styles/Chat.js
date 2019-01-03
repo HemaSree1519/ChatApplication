@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import {StyleSheet} from "react-native";
 
 export default StyleSheet.create({
     container: {
@@ -11,40 +11,40 @@ export default StyleSheet.create({
         borderBottomColor: '#eee',
     },
 
-    messageContainer:{
+    messageContainer: {
         flex: 1,
         borderBottomColor: "rgba(92,94,94,0.5)",
         borderBottomWidth: 0.5,
         marginRight: 60,
-        padding:20,
+        padding: 20,
         textAlign: "justify",
-        alignItems: "flex-start",
+        alignItems: "flex-end",
     },
 
-    senderMessageContainer:{
+    senderMessageContainer: {
         flex: 1,
         alignItems: "center",
         flexDirection: "row-reverse",
     },
-    receiverMessageContainer:{
+    receiverMessageContainer: {
         flex: 1,
         alignItems: "center",
         flexDirection: "row",
     },
-    senderTextContainer:{
+    senderTextContainer: {
         marginLeft: 60,
         fontSize: 20,
         paddingRight: 10
     },
-    receiverTextContainer:{
+    receiverTextContainer: {
         marginRight: 60,
         fontSize: 20,
         paddingLeft: 10
     },
     iconContainer: {
         borderRadius: 30,
-        width: 60,
-        height: 60
+        width: 50,
+        height: 50
     },
     message: {
         fontSize: 18,
