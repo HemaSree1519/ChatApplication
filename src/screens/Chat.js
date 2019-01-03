@@ -1,5 +1,5 @@
 import React from "react";
-import {FlatList, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View,Image} from 'react-native';
+import {FlatList, Image, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {Header, SafeAreaView} from 'react-navigation';
 import styles from "../styles/Chat";
 import firebase from '../../firebase/Firebase';
@@ -9,27 +9,41 @@ export default class Chat extends React.Component {
         super(props);
         this.state = {
             message: "",
-            messages: [],
+            messages: []
         }
     }
+
     componentWillMount() {
         const persons = this.props.navigation.getParam("persons");
-        const REG_USERS = firebase.database().ref('/registeredUsers');
-        const REF = REG_USERS.child(persons.sender).child("chat").child(persons.receiver.item.key);
-        REF.on('value', (chat) => {
+        let key = '';
+        if (persons.sender > persons.receiver.item.key) {
+            key = persons.receiver.item.key + persons.sender;
+        }
+        else {
+            key = persons.sender + persons.receiver.item.key;
+        }
+        const DB_REF = firebase.database().ref().child('/conversations').child(key);
+        DB_REF.on('value', (chat) => {
             let chatData = chat.val();
-            let temp = []
+            let _id = '';
+            let temp = [];
             for (let chatID in chatData) {
-                const message = {
-                    _id: chatData[chatID]._id,
-                    msg: chatData[chatID].msg,
+                if (chatData[chatID].sender === persons.sender) {
+                    _id = 1
+                }
+                else {
+                    _id = 2
+                }
+                let message = {
+                    _id: _id,
+                    msg: chatData[chatID].text,
                     createdAt: new Date(chatData[chatID].createdAt),
                 };
                 temp.push(message);
             }
-            this.setState({messages: temp});
+            this.setState({messages: temp})
         })
-        // const USER_CHAT=firebase.database().ref('/conversations')
+
     }
 
     static navigationOptions = ({navigation}) => {
@@ -51,35 +65,40 @@ export default class Chat extends React.Component {
         }
         const persons = this.props.navigation.getParam("persons");
         let message_object = {
-            sender : persons.sender,
-            receiver : persons.receiver.item.key,
+            sender: persons.sender,
+            receiver: persons.receiver.item.key,
             text: this.state.message,
             createdAt: new Date().getTime(),
         }
-        const REG_USERS = firebase.database().ref('/registeredUsers');
-        // const USER_CHAT = firebase.database().ref('/conversations');
-        // USER_CHAT.push(message_object);
-        REG_USERS.child(persons.sender).child("chat").child(persons.receiver.item.key).push(message_object);
-        message_object._id = 2;
-        REG_USERS.child(persons.receiver.item.key).child("chat").child(persons.sender).push(message_object);
+
+        const DB_REF = firebase.database().ref().child('/conversations');
+        let key = '';
+        if (persons.sender > persons.receiver.item.key) {
+            key = persons.receiver.item.key + persons.sender;
+        }
+        else {
+            key = persons.sender + persons.receiver.item.key;
+        }
+        DB_REF.child(key).push(message_object);
     }
 
     renderItem(message) {
         let personMessageContainer;
         let personTextContainer;
-        if(message.item._id===1){
-            personMessageContainer=styles.senderMessageContainer;
-            personTextContainer=styles.senderTextContainer;
+        if (message.item._id === 1) {
+            personMessageContainer = styles.senderMessageContainer;
+            personTextContainer = styles.senderTextContainer;
         }
-        else{
-            personMessageContainer=styles.receiverMessageContainer;
-            personTextContainer=styles.receiverTextContainer;
+        else {
+            personMessageContainer = styles.receiverMessageContainer;
+            personTextContainer = styles.receiverTextContainer;
         }
+        const time=message.item.createdAt.getHours()+":"+message.item.createdAt.getMinutes();
         return (
             <View style={[styles.messageContainer, personMessageContainer]}>
                 <Image source={require('../icon/user.png')}
-                       style={styles.iconContainer} />
-                    <Text style={personTextContainer}>{message.item.msg}</Text>
+                       style={styles.iconContainer}/>
+                <Text style={personTextContainer}>{message.item.msg+"\n"+time}</Text>
             </View>
         );
     };
@@ -101,7 +120,7 @@ export default class Chat extends React.Component {
                         <View style={styles.footer}>
                             <TextInput
                                 placeholder="TEXT TO SEND"
-                                value={this.state.typing}
+                                value={this.state.message}
                                 style={styles.input}
                                 onChangeText={text => this.setState({message: text})}>
                             </TextInput>
