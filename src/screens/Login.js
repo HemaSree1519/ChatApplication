@@ -24,12 +24,9 @@ export default class Login extends React.Component {
     setIsRegisterd(USER_PH_NUM) {
         try {
             AsyncStorage.setItem('isRegistered', 'true');
-            // AsyncStorage.getItem('isRegistered').then((isRegistered) => {
-            //     console.log(isRegistered);
-            // });
         }
         catch(err) {
-            console.log(err);
+            console.log('Error setting data'+err);
         }
         this.props.navigation.navigate('Home', {phoneNo: USER_PH_NUM}); 
     }

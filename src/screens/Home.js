@@ -15,8 +15,7 @@ export default class ChatBox extends Component {
     componentDidMount() {
         try {
             AsyncStorage.getItem('isRegistered').then((isRegistered) => {
-                console.log(isRegistered);
-                if (isRegistered === 'false') {
+                if (isRegistered === 'true') {
                     this.props.navigation.navigate('Login');
                 }
             });
