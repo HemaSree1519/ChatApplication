@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, TextInput, View} from 'react-native'
+import {TextInput, View, TouchableOpacity, Text,Image} from 'react-native'
 import styles from '../styles/Login';
 import firebase from '../../firebase/Firebase';
 
@@ -20,6 +20,16 @@ export default class Login extends React.Component {
         );
     };
 
+    validatePhoneNum(text){
+        let numbers = '0123456789';
+
+        for (var i=0; i < text.length; i++) {
+            if(numbers.indexOf(text[i]) === -1 ) {
+                return;
+            }
+        }
+        this.setState({ phoneNo: text,error:"" });
+    }
     handlePress() {
         let USER_PH_NUM = this.state.phoneNo;
         const REG_USERS = firebase.database().ref('/registeredUsers');
@@ -33,24 +43,29 @@ export default class Login extends React.Component {
 
     }
 
+
+
+
     render() {
         return (
             <View style={styles.mainContainer}>
-                <View>
+                <View style={styles.SectionStyle}>
+                    <Image source={require('../icon/phone_icon.jpg')}
+                                 style={styles.imageStyle}/>
                     <TextInput
-                        placeholder="Enter your phone number"
-                        keyboardType='numeric'
-                        style={styles.input}
-                        maxLength={10}
-                        onChangeText={(text) => this.setState({phoneNo: text})}
+                        style={styles.TextContainer}
+                        placeholder="Enter phone number"
+                        value={this.state.phoneNo}
+                        onChangeText={this.validatePhoneNum.bind(this)}
                     />
                 </View>
                 <View>
-                    <Button
-                        style={styles.button}
-                        title="Next"
-                        onPress={this.handlePress.bind(this)}
-                    />
+                    <TouchableOpacity style={[styles.button, { backgroundColor: this.state.phoneNo ? '#cc504e' : '#f49f8e' }]}
+                                      activeOpacity = { .5 }
+                                      disabled={!this.state.phoneNo}
+                                          onPress={this.handlePress.bind(this)}>
+                        <Text style={styles.text}>Login</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         )
