@@ -9,7 +9,7 @@ const Navigator = createStackNavigator(
         Chat:ChatScreen
     },
     {
-        initialRouteName: "Login",
+        initialRouteName: "Home",
     }
 );
 var AppContainer;
