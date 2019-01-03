@@ -1,11 +1,12 @@
 import React from 'react'
-import {Button, TextInput, View} from 'react-native'
+import { Button, TextInput, View, AsyncStorage } from 'react-native'
 import styles from '../styles/Login';
 import firebase from '../../firebase/Firebase';
 
 export default class Login extends React.Component {
 
     state = {phoneNo: ''}
+
 
     static navigationOptions = ({navigation}) => {
         return (
@@ -20,6 +21,15 @@ export default class Login extends React.Component {
         );
     };
 
+    setIsRegisterd(USER_PH_NUM) {
+        try {
+            AsyncStorage.setItem('isRegistered', 'true');
+        }
+        catch(err) {
+            console.log('Error setting data'+err);
+        }
+        this.props.navigation.navigate('Home', {phoneNo: USER_PH_NUM}); 
+    }
     handlePress() {
         let USER_PH_NUM = this.state.phoneNo;
         const REG_USERS = firebase.database().ref('/registeredUsers');
@@ -29,8 +39,7 @@ export default class Login extends React.Component {
             }
 
         });
-        this.props.navigation.navigate('Home', {phoneNo: USER_PH_NUM});
-
+       this.setIsRegisterd(USER_PH_NUM);
     }
 
     render() {
