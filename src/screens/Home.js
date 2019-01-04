@@ -1,27 +1,33 @@
-import React, { Component } from 'react';
-import { FlatList, Text, TouchableOpacity, View, AsyncStorage } from 'react-native';
+import React, {Component} from 'react';
+import {AsyncStorage, FlatList, Text, TouchableOpacity, View,PermissionsAndroid} from 'react-native';
 import styles from '../styles/Home';
 import contacts from 'react-native-contacts';
 import firebase from '../../firebase/Firebase';
 
-export default class ChatBox extends Component {
+export default class Home extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             contacts: [],
-            phoneNo: '',
+            phoneNo:this.props.navigation.getParam("phoneNo"),
         }
     }
-    componentDidMount() {
-        AsyncStorage.getItem('mobileNumber').then((mobileNumber) => {
-            if (mobileNumber === undefined || mobileNumber === null) {
-                this.props.navigation.navigate('Login');
-            }
-            this.setState({phoneNo: mobileNumber});
-        });
+    async getContactsPermission(){
+        const grant_permission = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.READ_CONTACTS
+        );
+        return grant_permission ===PermissionsAndroid.RESULTS.GRANTED;
     }
-    componentWillMount() {
+
+    async componentDidMount() {
+        const permission = await this.getContactsPermission();
+
+        if(!permission){
+            alert(permission);
+            return;
+        }
+
         const REG_USERS = firebase.database().ref('/registeredUsers');
         let cnts = [];
         contacts.getAll((err, local_contacts) => {
@@ -30,6 +36,7 @@ export default class ChatBox extends Component {
             }
             else {
                 REG_USERS.once('value', (reg_users) => {
+                    console.log('firebase')
                     for (let iterator = 0; iterator < local_contacts.length; iterator++) {
                         if (local_contacts[iterator].phoneNumbers.length !== 0) {
                             const USER_PH_NUM = local_contacts[iterator].phoneNumbers[0].number.replace(/\D/g, '');
@@ -43,18 +50,17 @@ export default class ChatBox extends Component {
                             }
                         }
                     }
-                    this.setState({
-                        contacts: cnts
-                    })
+                    this.setState({contacts: cnts});
                 });
             }
+            console.log(this.state.contacts)
         })
     }
 
-    static navigationOptions = ({ navigation }) => {
+    static navigationOptions = ({navigation}) => {
         return (
             {
-                headerTitle: 'ChatBook',
+                headerTitle: 'Sollu',
                 headerBackTitle: "Back",
                 headerTintColor: 'white',
                 headerStyle: {
@@ -66,19 +72,22 @@ export default class ChatBox extends Component {
     };
 
     renderName(contact) {
+        console.log("In home sender:")
+        console.log(this.state.phoneNo);
         let persons = {
             sender: this.state.phoneNo,
             receiver: contact
         }
-        console.log(persons.sender);
         return (
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', { "persons": persons })}
-                style={styles.separator}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', {"persons": persons})}
+                              style={styles.separator}>
                 <Text style={styles.item}> {persons.receiver.item.name} </Text>
             </TouchableOpacity>
         );
     }
+
     render() {
+        console.log(this.state.phoneNo);
         return (
             <View>
                 <FlatList
