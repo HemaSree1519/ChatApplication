@@ -62,3 +62,4 @@ buck-out/
 .watchmanconfig
 package-lock.json
 /node_modules/
+firebase/Firebase.js

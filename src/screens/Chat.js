@@ -64,13 +64,15 @@ export default class Chat extends React.Component {
             return;
         }
         const persons = this.props.navigation.getParam("persons");
+        console.log("persons here: ")
+        console.log(persons)
         let message_object = {
             sender: persons.sender,
             receiver: persons.receiver.item.key,
             text: this.state.message,
             createdAt: new Date().getTime(),
         }
-
+        this.setState({message: ""})
         const DB_REF = firebase.database().ref().child('/conversations');
         let key = '';
         if (persons.sender > persons.receiver.item.key) {
@@ -93,12 +95,12 @@ export default class Chat extends React.Component {
             personMessageContainer = styles.receiverMessageContainer;
             personTextContainer = styles.receiverTextContainer;
         }
-        const time=message.item.createdAt.getHours()+":"+message.item.createdAt.getMinutes();
+        const time = message.item.createdAt.getHours() + ":" + message.item.createdAt.getMinutes();
         return (
             <View style={[styles.messageContainer, personMessageContainer]}>
                 <Image source={require('../icon/user.png')}
                        style={styles.iconContainer}/>
-                <Text style={personTextContainer}>{message.item.msg+"\n"+time}</Text>
+                <Text style={personTextContainer}>{message.item.msg + "\n" + time}</Text>
             </View>
         );
     };
@@ -122,7 +124,8 @@ export default class Chat extends React.Component {
                                 placeholder="TEXT TO SEND"
                                 value={this.state.message}
                                 style={styles.input}
-                                onChangeText={text => this.setState({message: text})}>
+                                onChangeText={text => this.setState({message: text})}
+                                clearButtonMode='always'>
                             </TextInput>
                             <TouchableOpacity onPress={this.sendMessage.bind(this)}>
                                 <Text style={styles.send}>Send</Text>
