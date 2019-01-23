@@ -36,10 +36,9 @@ export default class Home extends Component {
             }
             else {
                 REG_USERS.once('value', (reg_users) => {
-                    console.log('firebase')
                     for (let iterator = 0; iterator < local_contacts.length; iterator++) {
                         if (local_contacts[iterator].phoneNumbers.length !== 0) {
-                            const USER_PH_NUM = local_contacts[iterator].phoneNumbers[0].number.replace(/\D/g, '');
+                            let USER_PH_NUM = local_contacts[iterator].phoneNumbers[0].number.replace(/\D/g, '');
                             const USER_NAME = local_contacts[iterator].givenName;
                             if (USER_PH_NUM && reg_users.hasChild(USER_PH_NUM)) {
                                 let cnt = {
@@ -53,7 +52,6 @@ export default class Home extends Component {
                     this.setState({contacts: cnts});
                 });
             }
-            console.log(this.state.contacts)
         })
     }
 
@@ -65,6 +63,7 @@ export default class Home extends Component {
                 headerTintColor: 'white',
                 headerStyle: {
                     backgroundColor: '#cc504d',
+                    fontFamily:"roboto.bold"
                 }
 
             }
@@ -72,8 +71,6 @@ export default class Home extends Component {
     };
 
     renderName(contact) {
-        console.log("In home sender:")
-        console.log(this.state.phoneNo);
         let persons = {
             sender: this.state.phoneNo,
             receiver: contact
@@ -87,7 +84,6 @@ export default class Home extends Component {
     }
 
     render() {
-        console.log(this.state.phoneNo);
         return (
             <View>
                 <FlatList

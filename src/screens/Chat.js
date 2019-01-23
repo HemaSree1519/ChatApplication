@@ -54,6 +54,7 @@ export default class Chat extends React.Component {
                 headerBackTitle: "Home",
                 headerStyle: {
                     backgroundColor: '#cc504d',
+                    fontFamily:"roboto.bold"
                 }
             }
         );
@@ -114,6 +115,9 @@ export default class Chat extends React.Component {
                     data={this.state.messages}
                     renderItem={this.renderItem.bind(this)}
                     keyExtractor={(item, index) => index.toString()}
+                    ref={ref => this.flatList = ref}
+                    onContentSizeChange={() => this.flatList.scrollToEnd({ animated: false })}
+                    onLayout={() => this.flatList.scrollToEnd({ animated: true })}
                 />
                 <KeyboardAvoidingView
                     keyboardVerticalOffset={keyboardVerticalOffset}

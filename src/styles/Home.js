@@ -13,5 +13,6 @@ export default StyleSheet.create({
         fontSize: 25,
         height: 70,
         flexDirection: "row",
+        fontFamily:"roboto.medium"
     },
 })

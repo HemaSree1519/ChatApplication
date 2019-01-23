@@ -34,12 +34,14 @@ export default StyleSheet.create({
     senderTextContainer: {
         marginLeft: 60,
         fontSize: 20,
-        paddingRight: 10
+        paddingRight: 10,
+        fontFamily:"roboto.regular"
     },
     receiverTextContainer: {
         marginRight: 60,
         fontSize: 20,
-        paddingLeft: 10
+        paddingLeft: 10,
+        fontFamily:"roboto.regular"
     },
     iconContainer: {
         borderRadius: 30,

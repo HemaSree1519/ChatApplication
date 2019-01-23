@@ -8,6 +8,7 @@ export default class Login extends React.Component {
 
     state = {
         phoneNo: '',
+        error: false,
         getting_id: false
     }
     async componentWillMount(){
@@ -33,7 +34,8 @@ export default class Login extends React.Component {
                 headerBackTitle: "Back",
                 headerTintColor: "white",
                 headerStyle: {
-                    backgroundColor: '#cc504e'
+                    backgroundColor: '#cc504e',
+                    fontFamily:"roboto.bold"
                 },
             }
         );
@@ -44,6 +46,7 @@ export default class Login extends React.Component {
 
         for (var i = 0; i < text.length; i++) {
             if (numbers.indexOf(text[i]) === -1) {
+                this.setState({ error: true });
                 return;
             }
         }
@@ -98,7 +101,8 @@ export default class Login extends React.Component {
                     />
                 </View>
                 <View>
-                    <TouchableOpacity style={[styles.button, { backgroundColor: this.state.phoneNo ? '#cc504e' : '#f49f8e' }]}
+                    <TouchableOpacity style={[styles.button, { backgroundColor: this.state.phoneNo ? '#cc504e' : '#f49f8e' },
+                        { borderColor: this.state.error ? 'red' : '#000' }]}
                                       activeOpacity = { .5 }
                                       disabled={!this.state.phoneNo}
                                           onPress={this.handlePress.bind(this)}>
