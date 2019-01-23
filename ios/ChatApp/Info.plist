@@ -5,7 +5,11 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>NSContactsUsageDescription</key>
+<<<<<<< HEAD
 	<string/>
+=======
+	<string></string>
+>>>>>>> 47727ac0c38a991c5a7014e2e321944728062b6a
 	<key>CFBundleDisplayName</key>
 	<string>ChatApp</string>
 	<key>CFBundleExecutable</key>
@@ -72,9 +76,12 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+<<<<<<< HEAD
 		<string>roboto.bold.ttf</string>
 		<string>roboto.light.ttf</string>
 		<string>roboto.thin.ttf</string>
+=======
+>>>>>>> 47727ac0c38a991c5a7014e2e321944728062b6a
 	</array>
 </dict>
 </plist>

@@ -54,6 +54,7 @@ export default class Chat extends React.Component {
                 headerBackTitle: "Home",
                 headerStyle: {
                     backgroundColor: '#cc504d',
+
                     fontFamily:"roboto.bold"
                 }
             }

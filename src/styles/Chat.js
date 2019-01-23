@@ -35,13 +35,13 @@ export default StyleSheet.create({
         marginLeft: 60,
         fontSize: 20,
         paddingRight: 10,
-        fontFamily:"roboto.regular"
+        fontFamily:"roboto.regular",
     },
     receiverTextContainer: {
         marginRight: 60,
         fontSize: 20,
-        paddingLeft: 10,
-        fontFamily:"roboto.regular"
+        fontFamily:"roboto.regular",
+        paddingLeft: 10
     },
     iconContainer: {
         borderRadius: 30,

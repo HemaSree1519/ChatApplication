@@ -34,8 +34,8 @@ export default class Login extends React.Component {
                 headerBackTitle: "Back",
                 headerTintColor: "white",
                 headerStyle: {
-                    backgroundColor: '#cc504e',
-                    fontFamily:"roboto.bold"
+                    fontFamily:"roboto.bold",
+                    backgroundColor: '#cc504e'
                 },
             }
         );
@@ -46,7 +46,7 @@ export default class Login extends React.Component {
 
         for (var i = 0; i < text.length; i++) {
             if (numbers.indexOf(text[i]) === -1) {
-                this.setState({ error: true });
+                this.setState({ error: true })
                 return;
             }
         }
@@ -101,8 +101,7 @@ export default class Login extends React.Component {
                     />
                 </View>
                 <View>
-                    <TouchableOpacity style={[styles.button, { backgroundColor: this.state.phoneNo ? '#cc504e' : '#f49f8e' },
-                        { borderColor: this.state.error ? 'red' : '#000' }]}
+                    <TouchableOpacity style={[styles.button, { backgroundColor: this.state.phoneNo ? '#cc504e' : '#f49f8e' }]}
                                       activeOpacity = { .5 }
                                       disabled={!this.state.phoneNo}
                                           onPress={this.handlePress.bind(this)}>
