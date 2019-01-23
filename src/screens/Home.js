@@ -45,7 +45,7 @@ export default class Home extends Component {
                               USER_PH_NUM=trim;
                            }
                             const USER_NAME = local_contacts[iterator].givenName;
-                            if (USER_PH_NUM && reg_users.hasChild(USER_PH_NUM)) {
+                            if (USER_PH_NUM && USER_PH_NUM !== this.state.phoneNo && reg_users.hasChild(USER_PH_NUM)) {
                                 let cnt = {
                                     key: USER_PH_NUM,
                                     name: USER_NAME
@@ -54,6 +54,13 @@ export default class Home extends Component {
                             }
                         }
                     }
+                    let self_cnt = {
+                        key : this.state.phoneNo,
+                        name: "YOU"
+                    }
+                    console.log("Self contact");
+                    console.log(self_cnt)
+                    cnts.push(self_cnt);
                     this.setState({contacts: cnts});
                 });
             }

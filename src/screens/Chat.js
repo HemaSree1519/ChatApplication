@@ -16,7 +16,10 @@ export default class Chat extends React.Component {
     componentWillMount() {
         const persons = this.props.navigation.getParam("persons");
         let key = '';
-        if (persons.sender > persons.receiver.item.key) {
+        if (persons.sender === persons.receiver) {
+            key = persons.sender
+        }
+        else if (persons.sender > persons.receiver.item.key) {
             key = persons.receiver.item.key + persons.sender;
         }
         else {
@@ -28,11 +31,15 @@ export default class Chat extends React.Component {
             let _id = '';
             let temp = [];
             for (let chatID in chatData) {
-                if (chatData[chatID].sender === persons.sender) {
-                    _id = 1
+
+                if(chatData[chatID].sender === persons.sender){
+                    _id=1
                 }
-                else {
-                    _id = 2
+                if(chatData[chatID].sender !== persons.sender){
+                    _id=2
+                }
+                if (chatData[chatID].sender === persons.sender && chatData[chatID].receiver === persons.sender) {
+                    _id = 0
                 }
                 let message = {
                     _id: _id,
@@ -55,7 +62,7 @@ export default class Chat extends React.Component {
                 headerStyle: {
                     backgroundColor: '#cc504d',
 
-                    fontFamily:"roboto.bold"
+                    fontFamily: "roboto.bold"
                 }
             }
         );
@@ -68,6 +75,14 @@ export default class Chat extends React.Component {
         const persons = this.props.navigation.getParam("persons");
         console.log("persons here: ")
         console.log(persons)
+        // if(persons.sender===persons.receiver)
+        // {
+        //     // console.log("self chat in chat screen");
+        //     let self_message_object = {
+        //         text : this.state.message,
+        //         createdAt: new Date().getTime()
+        //     }
+        // }
         let message_object = {
             sender: persons.sender,
             receiver: persons.receiver.item.key,
@@ -77,7 +92,10 @@ export default class Chat extends React.Component {
         this.setState({message: ""})
         const DB_REF = firebase.database().ref().child('/conversations');
         let key = '';
-        if (persons.sender > persons.receiver.item.key) {
+        if (persons.sender === persons.receiver) {
+            key = persons.sender;
+        }
+        else if (persons.sender > persons.receiver.item.key) {
             key = persons.receiver.item.key + persons.sender;
         }
         else {
@@ -89,6 +107,19 @@ export default class Chat extends React.Component {
     renderItem(message) {
         let personMessageContainer;
         let personTextContainer;
+        const time = message.item.createdAt.getHours() + ":" + message.item.createdAt.getMinutes();
+        if (message.item._id === 0)
+        {
+            personMessageContainer = styles.selfMessageContainer;
+            personTextContainer = styles.selfTextContainer;
+            return(
+                    <View style={[styles.messageContainer, personMessageContainer]}>
+                        <Text style={personTextContainer}>{message.item.msg+ "\n" + time}</Text>
+                        {/*<Text styles={styles.selfTimeContainer}>{time}</Text>*/}
+                    </View>
+                )
+        }
+        else {
         if (message.item._id === 1) {
             personMessageContainer = styles.senderMessageContainer;
             personTextContainer = styles.senderTextContainer;
@@ -97,7 +128,6 @@ export default class Chat extends React.Component {
             personMessageContainer = styles.receiverMessageContainer;
             personTextContainer = styles.receiverTextContainer;
         }
-        const time = message.item.createdAt.getHours() + ":" + message.item.createdAt.getMinutes();
         return (
             <View style={[styles.messageContainer, personMessageContainer]}>
                 <Image source={require('../icon/user.png')}
@@ -105,6 +135,9 @@ export default class Chat extends React.Component {
                 <Text style={personTextContainer}>{message.item.msg + "\n" + time}</Text>
             </View>
         );
+         }
+
+
     };
 
     render() {
@@ -117,8 +150,8 @@ export default class Chat extends React.Component {
                     renderItem={this.renderItem.bind(this)}
                     keyExtractor={(item, index) => index.toString()}
                     ref={ref => this.flatList = ref}
-                    onContentSizeChange={() => this.flatList.scrollToEnd({ animated: false })}
-                    onLayout={() => this.flatList.scrollToEnd({ animated: true })}
+                    onContentSizeChange={() => this.flatList.scrollToEnd({animated: false})}
+                    onLayout={() => this.flatList.scrollToEnd({animated: true})}
                 />
                 <KeyboardAvoidingView
                     keyboardVerticalOffset={keyboardVerticalOffset}

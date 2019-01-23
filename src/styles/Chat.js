@@ -15,7 +15,6 @@ export default StyleSheet.create({
         flex: 1,
         borderBottomColor: "rgba(92,94,94,0.5)",
         borderBottomWidth: 0.5,
-        marginRight: 60,
         padding: 20,
         textAlign: "justify",
         alignItems: "flex-end",
@@ -24,11 +23,13 @@ export default StyleSheet.create({
     senderMessageContainer: {
         flex: 1,
         alignItems: "center",
+        marginRight: 60,
         flexDirection: "row-reverse",
     },
     receiverMessageContainer: {
         flex: 1,
         alignItems: "center",
+        marginLeft: 60,
         flexDirection: "row",
     },
     senderTextContainer: {
@@ -42,6 +43,14 @@ export default StyleSheet.create({
         fontSize: 20,
         fontFamily:"roboto.regular",
         paddingLeft: 10
+    },
+    selfMessageContainer:{
+        alignItems: "center",
+        flexDirection: "row",
+    },
+    selfTextContainer:{
+        fontSize: 25,
+        fontFamily:"roboto.regular",
     },
     iconContainer: {
         borderRadius: 30,
