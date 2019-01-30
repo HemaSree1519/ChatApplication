@@ -20,6 +20,8 @@ export default class Home extends Component {
         return grant_permission ===PermissionsAndroid.RESULTS.GRANTED;
     }
 
+
+
     async componentDidMount() {
         const permission = await this.getContactsPermission();
 

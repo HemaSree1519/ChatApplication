@@ -76,12 +76,13 @@ export default StyleSheet.create({
     },
     footer: {
         flexDirection: 'row',
-        backgroundColor: '#eee',
+        backgroundColor: '#eeeeee',
     },
     send: {
         alignSelf: 'center',
-        color: 'lightseagreen',
-        fontSize: 20,
+        color: '#cc504e',
+        fontFamily:"roboto.bold",
+        fontSize: 23,
         fontWeight: 'bold',
         padding: 20,
     },

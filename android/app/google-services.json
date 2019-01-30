@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "623361853537",
+    "firebase_url": "https://chatbook-e5d99.firebaseio.com",
+    "project_id": "chatbook-e5d99",
+    "storage_bucket": "chatbook-e5d99.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:623361853537:android:c61cc839daef7074",
+        "android_client_info": {
+          "package_name": "com.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "623361853537-u8uinl972gn3ujahgqhotc936uhpc9ru.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_OkFwQvMhFF5HtIZ_bBQlprdQTffQKZw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
