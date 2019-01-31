@@ -18,6 +18,8 @@ import java.util.List;
 
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage; // <-- Add this line
 
+import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
@@ -35,7 +37,8 @@ public class MainApplication extends Application implements ReactApplication {
             new RNGestureHandlerPackage(),
             new RNFirebasePackage(),
             new ReactNativeContacts(),
-              new RNFirebaseMessagingPackage() // <-- Add this line
+              new RNFirebaseMessagingPackage(), // <-- Add this line
+              new RNFirebaseNotificationsPackage()
       );
     }
 
