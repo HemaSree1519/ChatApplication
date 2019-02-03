@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AsyncStorage, FlatList, Text, TouchableOpacity, View,PermissionsAndroid,Platform} from 'react-native';
+import {AsyncStorage, FlatList, PermissionsAndroid, Platform, Text, TouchableOpacity, View} from 'react-native';
 import styles from '../styles/Home';
 import contacts from 'react-native-contacts';
 import firebase from '../../firebase/Firebase';
@@ -11,14 +11,15 @@ export default class Home extends Component {
         super(props);
         this.state = {
             contacts: [],
-            phoneNo:this.props.navigation.getParam("phoneNo"),
+            phoneNo: this.props.navigation.getParam("phoneNo"),
         }
     }
-    async getContactsPermission(){
+
+    async getContactsPermission() {
         const grant_permission = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.READ_CONTACTS
         );
-        return grant_permission ===PermissionsAndroid.RESULTS.GRANTED;
+        return grant_permission === PermissionsAndroid.RESULTS.GRANTED;
     }
 
 
@@ -35,7 +36,7 @@ export default class Home extends Component {
     async componentDidMount() {
         const permission = await this.getContactsPermission();
 
-        if(!permission){
+        if (!permission) {
             alert(permission);
             return;
         }
@@ -80,6 +81,7 @@ export default class Home extends Component {
         await this.checkPermission();
         await this.createNotificationListeners();
     }
+
     componentWillUnmount() {
         this.notificationListener;
         this.notificationOpenedListener;
@@ -93,7 +95,7 @@ export default class Home extends Component {
                 headerTintColor: 'white',
                 headerStyle: {
                     backgroundColor: '#cc504d',
-                    fontFamily:"roboto.bold"
+                    fontFamily: "roboto.bold"
                 }
 
             }
@@ -101,26 +103,59 @@ export default class Home extends Component {
     };
 
 
-
-
-
-
-
     async createNotificationListeners() {
         /*
     * Triggered when a particular notification has been received in foreground
     * */
+
+        const channel = new Firebase.notifications.Android.Channel(
+            '001',
+            'Channel Name',
+            Firebase.notifications.Android.Importance.Max
+        ).setDescription('A natural description of the channel');
+        Firebase.notifications().android.createChannel(channel);
+
         this.notificationListener = Firebase.notifications().onNotification((notification) => {
-            const { title, body } = notification;
-            this.showAlert(title, body);
+            const {title, body} = notification;
+            // this.showAlert(title, body);
+            console.log("Frontgrond");
+            console.log(notification)
+            // if(appState==='foreground'){console.log("Foreground")}
+            if (Platform.OS === 'android') {
+
+                const localNotification = new Firebase.notifications.Notification({
+                    sound: 'default',
+                    show_in_foreground: true,
+                })
+                    .setNotificationId(notification.notificationId)
+                    .setTitle(notification.title)
+                    .setBody(notification.body)
+                    .android.setChannelId(channel.channelId)
+                    .android.setPriority(Firebase.notifications.Android.Priority.High);
+
+                Firebase.notifications().displayNotification(localNotification)
+                    .catch(err => console.error("cant send"));
+
+            }
+
         });
 
         /*
         * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
         * */
-        this.notificationOpenedListener = Firebase.notifications().onNotificationOpened((notificationOpen) => {
-            const { title, body } = notificationOpen.notification;
-            this.showAlert(title, body);
+        this.notificationOpenedListener = Firebase.notifications().onNotificationOpened(async (notificationOpen) => {
+            const {title, body} = notificationOpen.notification;
+            // this.showAlert(title, body);
+            let fromAsync = await AsyncStorage.getItem('9440179801');
+            let cnt = {
+                key: '9440179801',
+                name: fromAsync
+            }
+            let persons = {
+                sender: this.state.phoneNo,
+                receiver: cnt
+            }
+            this.props.navigation.navigate('Chat', {"persons": persons})
         });
 
         /*
@@ -128,8 +163,10 @@ export default class Home extends Component {
         * */
         const notificationOpen = await Firebase.notifications().getInitialNotification();
         if (notificationOpen) {
-            const { title, body } = notificationOpen.notification;
-            this.showAlert(title, body);
+            const {title, body} = notificationOpen.notification;
+            // this.showAlert(title, body);
+            console.log("Notofication dataaaa : ")
+            console.log(notificationOpen)
             let fromAsync = await AsyncStorage.getItem('9440179801');
             let cnt = {
                 key: '9440179801',
@@ -149,14 +186,13 @@ export default class Home extends Component {
         this.messageListener = Firebase.messaging().onMessage((message) => {
             //process data message
             console.log(JSON.stringify(message));
+            console.log("testing")
         });
     }
 
     showAlert(title, body) {
-        alert(
-        );
+        alert("Hello Hema");
     }
-
 
 
     async getToken() {
@@ -167,7 +203,8 @@ export default class Home extends Component {
                 console.log('fcmToken:', fcmToken);
                 await AsyncStorage.setItem('fcmToken', fcmToken);
             }
-        });
+        }
+        console.log('fcmToken:', fcmToken);
     }
 
     async requestPermission() {
@@ -178,7 +215,6 @@ export default class Home extends Component {
             console.log('permission rejected');
         }
     }
-
 
 
     renderName(contact) {
@@ -201,6 +237,7 @@ export default class Home extends Component {
                     data={this.state.contacts}
                     renderItem={this.renderName.bind(this)}
                 />
+
             </View>
         );
     }
