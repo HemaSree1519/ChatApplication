@@ -19,11 +19,11 @@ export default class Chat extends React.Component {
         if (persons.sender === persons.receiver) {
             key = persons.sender
         }
-        else if (persons.sender > persons.receiver.item.key) {
-            key = persons.receiver.item.key + persons.sender;
+        else if (persons.sender > persons.receiver.key) {
+            key = persons.receiver.key + persons.sender;
         }
         else {
-            key = persons.sender + persons.receiver.item.key;
+            key = persons.sender + persons.receiver.key;
         }
         const DB_REF = firebase.database().ref().child('/conversations').child(key);
         DB_REF.on('value', (chat) => {
@@ -56,7 +56,7 @@ export default class Chat extends React.Component {
     static navigationOptions = ({navigation}) => {
         return (
             {
-                headerTitle: navigation.getParam("persons").receiver.item.name,
+                headerTitle: navigation.getParam("persons").receiver.name,
                 headerTintColor: 'white',
                 headerBackTitle: "Home",
                 headerStyle: {
@@ -85,7 +85,7 @@ export default class Chat extends React.Component {
         // }
         let message_object = {
             sender: persons.sender,
-            receiver: persons.receiver.item.key,
+            receiver: persons.receiver.key,
             text: this.state.message,
             createdAt: new Date().getTime(),
         }
@@ -95,11 +95,11 @@ export default class Chat extends React.Component {
         if (persons.sender === persons.receiver) {
             key = persons.sender;
         }
-        else if (persons.sender > persons.receiver.item.key) {
-            key = persons.receiver.item.key + persons.sender;
+        else if (persons.sender > persons.receiver.key) {
+            key = persons.receiver.key + persons.sender;
         }
         else {
-            key = persons.sender + persons.receiver.item.key;
+            key = persons.sender + persons.receiver.key;
         }
         DB_REF.child(key).push(message_object);
     }

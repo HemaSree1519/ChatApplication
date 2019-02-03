@@ -4,7 +4,6 @@ import styles from '../styles/Home';
 import contacts from 'react-native-contacts';
 import firebase from '../../firebase/Firebase';
 import Firebase from 'react-native-firebase';
-import * as Alert from "react-native";
 
 export default class Home extends Component {
 
@@ -48,15 +47,15 @@ export default class Home extends Component {
                 throw err
             }
             else {
-                REG_USERS.once('value', (reg_users) => {
+                REG_USERS.once('value', async (reg_users) => {
                     for (let iterator = 0; iterator < local_contacts.length; iterator++) {
                         if (local_contacts[iterator].phoneNumbers.length !== 0) {
                             let USER_PH_NUM = local_contacts[iterator].phoneNumbers[0].number.replace(/\D/g, '');
                             let trim;
-                            if(USER_PH_NUM.length===12){
-                              trim = USER_PH_NUM.substring(2);
-                              USER_PH_NUM=trim;
-                           }
+                            if (USER_PH_NUM.length === 12) {
+                                trim = USER_PH_NUM.substring(2);
+                                USER_PH_NUM = trim;
+                            }
                             const USER_NAME = local_contacts[iterator].givenName;
                             if (USER_PH_NUM && USER_PH_NUM !== this.state.phoneNo && reg_users.hasChild(USER_PH_NUM)) {
                                 let cnt = {
@@ -64,15 +63,14 @@ export default class Home extends Component {
                                     name: USER_NAME
                                 }
                                 cnts.push(cnt);
+                                await AsyncStorage.setItem(USER_PH_NUM, USER_NAME);
                             }
                         }
                     }
                     let self_cnt = {
-                        key : this.state.phoneNo,
+                        key: this.state.phoneNo,
                         name: "You"
                     }
-                    console.log("Self contact");
-                    console.log(self_cnt)
                     cnts.push(self_cnt);
                     this.setState({contacts: cnts});
                 });
@@ -132,6 +130,18 @@ export default class Home extends Component {
         if (notificationOpen) {
             const { title, body } = notificationOpen.notification;
             this.showAlert(title, body);
+            let fromAsync = await AsyncStorage.getItem('9440179801');
+            let cnt = {
+                key: '9440179801',
+                name: fromAsync
+            }
+            let persons = {
+                sender: this.state.phoneNo,
+                receiver: cnt
+            }
+            this.props.navigation.navigate('Chat', {"persons": persons})
+
+
         }
         /*
         * Triggered for data only payload in foreground
@@ -144,19 +154,8 @@ export default class Home extends Component {
 
     showAlert(title, body) {
         alert(
-            title, body,
-            [
-                { text: 'OK', onPress: () => console.log('OK Pressed') },
-            ],
-            { cancelable: false },
         );
     }
-
-
-
-
-
-
 
 
 
@@ -165,21 +164,17 @@ export default class Home extends Component {
         if (!fcmToken) {
             fcmToken = await Firebase.messaging().getToken();
             if (fcmToken) {
-                // user has a device token
                 console.log('fcmToken:', fcmToken);
                 await AsyncStorage.setItem('fcmToken', fcmToken);
             }
-        }
-        console.log('fcmToken:', fcmToken);
+        });
     }
 
     async requestPermission() {
         try {
             await Firebase.messaging().requestPermission();
-            // User has authorised
             this.getToken();
         } catch (error) {
-            // User has rejected permissions
             console.log('permission rejected');
         }
     }
@@ -189,12 +184,12 @@ export default class Home extends Component {
     renderName(contact) {
         let persons = {
             sender: this.state.phoneNo,
-            receiver: contact
+            receiver: contact.item
         }
         return (
             <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', {"persons": persons})}
                               style={styles.separator}>
-                <Text style={styles.item}> {persons.receiver.item.name} </Text>
+                <Text style={styles.item}> {persons.receiver.name} </Text>
             </TouchableOpacity>
         );
     }

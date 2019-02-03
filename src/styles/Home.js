@@ -10,9 +10,9 @@ export default StyleSheet.create({
     },
     item: {
         padding: 20,
-        fontSize: 25,
+        fontSize: 20,
         height: 70,
         flexDirection: "row",
-        fontFamily:"roboto.medium"
+        fontFamily:"roboto.regular"
     },
 })
